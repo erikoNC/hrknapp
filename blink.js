@@ -2,10 +2,14 @@ const five = require('johnny-five');
 const board = new five.Board();
 const Player = require('player');
 const DESPACITO = '../despacito_cut.mp3';
-
 const makeRequest = require('./requestService.js');
 
+// Initialize webserver
+const WebServer = require('./server.js');
+const server = new WebServer(3000);
+server.start();
 
+// Initialize webcam
 const NodeWebcam = require('node-webcam');
 
 const webcamOpts = {
