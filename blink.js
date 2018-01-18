@@ -1,24 +1,24 @@
-var five = require('johnny-five');
-var board = new five.Board();
-var Player = require('player');
+const five = require('johnny-five');
+const board = new five.Board();
+const Player = require('player');
 const DESPACITO = '../despacito_cut.mp3';
-var fetch = require('node-fetch');
+const fetch = require('node-fetch');
 
 
-var NodeWebcam = require('node-webcam');
+const NodeWebcam = require('node-webcam');
 
-var webcamOpts = {
+const webcamOpts = {
 
     //Picture related
-    width: 20,
-    height: 20,
-    quality: 5,
+    width: 500,
+    height: 500,
+    quality: 100,
 
     //Delay to take shot
     delay: 0,
 
     //Save shots in memory
-    saveShots: true,
+    saveShots: false,
 
     // [jpeg, png] support varies
     // Webcam.OutputTypes
@@ -39,12 +39,12 @@ var webcamOpts = {
 
 };
 
-var webcam = NodeWebcam.create(webcamOpts);
+const webcam = NodeWebcam.create(webcamOpts);
 
 board.on('ready', function() {
-  var despacitoButton = new five.Button(2);
-  var led = new five.Led(13);
-  var player = new Player(DESPACITO);
+  const despacitoButton = new five.Button(2);
+  const led = new five.Led(13);
+  const player = new Player(DESPACITO);
 
   player.on('error', function(err){
     console.log(err);
@@ -55,21 +55,21 @@ board.on('ready', function() {
     !isPlaying ? player.play() : player.stop()
     isPlaying = !isPlaying;
     webcam.capture('test', function(err, data) {
-        makeRequest(data);
+      makeRequest(data.replace('data:image/png;base64,', ''));
       });
     })
   })
 
 function makeRequest(img) {
-  const url = 'http://10.22.200.61:8080/push';
+  const url = 'http://10.22.200.65:8080/push';
 
-  var data = {
-    title: "NYANSATT!!!",
-    content: "NYANSATT!!!",
+  const data = {
+    title: "foo",
+    content: "bar",
     image: img
   }
 
-  console.log(data);
+  // console.log(data);
   fetch(url, {
     method: 'POST',
     body: JSON.stringify(data),
