@@ -1,0 +1,14 @@
+{
+  "imagePushUrl": "http://10.22.200.50:8080/push",
+  "webcamOpts": {
+      "width": 500,
+      "height": 500,
+      "quality": 100,
+      "delay": 0,
+      "saveShots": false,
+      "output": "png",
+      "device": false,
+      "callbackReturn": "base64",
+      "verbose": false
+    }
+}
