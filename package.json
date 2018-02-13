@@ -2,7 +2,7 @@
   "name": "hr",
   "version": "1.0.0",
   "description": "",
-  "main": "blink.js",
+  "main": "app.js",
   "dependencies": {
     "express": "^4.16.2",
     "johnny-five": "^0.11.6",
