@@ -4,11 +4,10 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "express": "^4.16.2",
-    "johnny-five": "^0.11.6",
     "node-fetch": "^1.7.3",
     "node-webcam": "^0.4.3",
-    "player": "^0.6.1",
+    "play-sound": "^1.1.2",
+    "serialport": "^6.1.1",
     "speaker": "^0.4.0"
   },
   "devDependencies": {},

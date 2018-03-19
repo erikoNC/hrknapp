@@ -1,13 +1,8 @@
-const five = require('johnny-five');
-const board = new five.Board();
-const Player = require('player');
-const DESPACITO = '../despacito_cut.mp3';
+var SerialPort = require('serialport');
+var serialport = new SerialPort('/dev/tty.wchusbserial14620');
+const DESPACITO = './despacito_cut.mp3';
 const makeRequest = require('./requestService.js');
-
-// Initialize webserver
-// const WebServer = require('./server.js');
-// const server = new WebServer(3000);
-// server.start();
+var player = require('play-sound')(opts = {})
 
 // Initialize webcam
 const NodeWebcam = require('node-webcam');
@@ -16,28 +11,29 @@ const NodeWebcam = require('node-webcam');
  var fs = require("fs");
  console.log("\n *STARTING* \n");
 // Get content from file
+
  var blob = fs.readFileSync("./config.json");
 // Define to JSON type
- const config = JSON.parse(blob);
- // console.log(webcamOpts);
+const config = JSON.parse(blob);
 
 const webcam = NodeWebcam.create(config.webcamOpts);
 
-board.on('ready', function() {
-  const despacitoButton = new five.Button(2);
-  const led = new five.Led(13);
-  const player = new Player(DESPACITO);
+serialport.on('open', () => {
+  console.log('Serial port opened');
 
-  player.on('error', function(err){
-    console.log(err);
+  serialport.on('data', data => {
+    if (data[0] == 1) {
+      console.log('Playing despacito');
+      playDespacito();
+    } 
+    console.log(data[0]);
   });
+});
 
-  var isPlaying = false;
-  despacitoButton.on('press', function() {
-    !isPlaying ? player.play() : player.stop()
-    isPlaying = !isPlaying;
-    webcam.capture('test', function(err, data) {
-      makeRequest(data.replace('data:image/png;base64,', ''));
-      });
-    })
-  })
+function playDespacito() {
+  player.play(DESPACITO, function(err) {});
+
+  webcam.capture('test', (err, data) => {
+    makeRequest(data.replace('data:image/png;base64,', ''));
+  });
+}
