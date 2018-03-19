@@ -1,6 +1,8 @@
 {
-  "imagePushUrl": "http://10.22.200.50:8080/push",
-  "webcamOpts": {
+  "host": "http://localhost:8080/push",
+  "serial_port": "/dev/tty.wchusbserial14620",
+  "high": 1,
+  "webcam_opts": {
       "width": 500,
       "height": 500,
       "quality": 100,
@@ -10,5 +12,6 @@
       "device": false,
       "callbackReturn": "base64",
       "verbose": false
-    }
+    },
+  "song": "/despacito_cut.mp3"
 }

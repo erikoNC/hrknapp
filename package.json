@@ -1,14 +1,12 @@
 {
-  "name": "hr",
+  "name": "hrknapp",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "node-fetch": "^1.7.3",
     "node-webcam": "^0.4.3",
     "play-sound": "^1.1.2",
-    "serialport": "^6.1.1",
-    "speaker": "^0.4.0"
+    "serialport": "^6.1.1"
   },
   "devDependencies": {},
   "scripts": {

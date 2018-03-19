@@ -1,39 +1,40 @@
+// Read config
+var fs = require("fs");
+var blob = fs.readFileSync("./config.json");
+var config = JSON.parse(blob);
+
+// Imports
 var SerialPort = require('serialport');
-var serialport = new SerialPort('/dev/tty.wchusbserial14620');
-const DESPACITO = './despacito_cut.mp3';
-const makeRequest = require('./requestService.js');
-var player = require('play-sound')(opts = {})
+var serialport = new SerialPort(config.serial_port);
+var PushService = require('./pushService.js');
+var pushService = new PushService(config.host);
+var NodeWebcam = require('node-webcam');
+
+// Constants
+const BUTTON_PRESSED = 1;
+
+// Initialize player
+var player = require('play-sound')(opts = {});
 
 // Initialize webcam
-const NodeWebcam = require('node-webcam');
-
-// Define JSON File
- var fs = require("fs");
- console.log("\n *STARTING* \n");
-// Get content from file
-
- var blob = fs.readFileSync("./config.json");
-// Define to JSON type
-const config = JSON.parse(blob);
-
-const webcam = NodeWebcam.create(config.webcamOpts);
+const webcam = NodeWebcam.create(config.webcam_opts);
 
 serialport.on('open', () => {
   console.log('Serial port opened');
 
   serialport.on('data', data => {
-    if (data[0] == 1) {
-      console.log('Playing despacito');
-      playDespacito();
+    if (data[0] == BUTTON_PRESSED) {
+      captureImageAndSendPush();
     } 
-    console.log(data[0]);
   });
 });
 
-function playDespacito() {
-  player.play(DESPACITO, function(err) {});
+function captureImageAndSendPush() {
+  console.log('Capturing image and sending push');
+  player.play(config.song, function(err) {});
 
-  webcam.capture('test', (err, data) => {
-    makeRequest(data.replace('data:image/png;base64,', ''));
+  webcam.capture('image_employee', (err, data) => {
+    let pushMessage = pushService.createPush('Nyansatt', 'Velkommen skal du være', data);
+    pushService.sendPush(pushMessage);
   });
 }
