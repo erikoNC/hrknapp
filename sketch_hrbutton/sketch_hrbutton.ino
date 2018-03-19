@@ -11,7 +11,6 @@
 
 #include <require_cpp11.h>
 #include <MFRC522.h>
-#include <deprecated.h>
 #include <MFRC522Extended.h>
 
 #define SS_PIN 10
@@ -41,6 +40,7 @@ unsigned long currentTime = 0;
 unsigned long pastTime = 0;
 unsigned int seconds = 0;
 bool authorized = false;
+bool buttonPressed = false;
 
 void setup() {
   // Setup serial communcation with host
@@ -49,7 +49,6 @@ void setup() {
 
   // Setup RFID
   rfid.PCD_Init(); // Init MFRC522 card
-  Serial.println("Scan PICC to see UID and type");
 
   // Setup LCD
   lcd.begin(16,2);
@@ -75,12 +74,12 @@ void loop() {
   if (currentTime > timeSinceAuthorization) {
     lcd.clear();
     authorized = false;
+    buttonPressed = false;
     seconds = 0;
   }
 
   if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
-    Serial.print("Reading tag:");
-    printHex(rfid.uid.uidByte, rfid.uid.size); 
+    //printHex(rfid.uid.uidByte, rfid.uid.size); 
 
     if (!authorized) {
       if (isAuthorized()) {
@@ -88,20 +87,20 @@ void loop() {
         timeAuthorized = millis();
         printString("Authorized :)", 0);
         playAuthorizedSound();
-        Serial.println(" is authorized!");
       } else {
         authorized = false;
         printString("Unauthorized :/", 0);
         playUnauthorizedSound();
-        Serial.println(" is not authorized!");
       } 
     }
   }
 
   int buttonState = digitalRead(button);
   if (buttonState == HIGH && authorized) {
-    Serial.println("User is authorized to perform action"); 
-    Firmata.sendString("ACTION_CREATE_POST");
+    if (!buttonPressed) {
+      buttonPressed = true;
+      Serial.write(1);
+    }
   }
 }
 
