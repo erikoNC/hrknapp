@@ -34,7 +34,7 @@ function captureImageAndSendPush() {
   player.play(config.song, function(err) {});
 
   webcam.capture('image_employee', (err, data) => {
-    let pushMessage = pushService.createPush('Nyansatt', 'Velkommen skal du være', data);
+    let pushMessage = pushService.createPush('Nyansatt', 'Nyansatt, velkommen skal du være!', data);
     pushService.sendPush(pushMessage);
   });
 }

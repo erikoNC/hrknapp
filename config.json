@@ -2,8 +2,8 @@
   "host": "https://faghelg.herokuapp.com/push",
   "serial_port": "/dev/ttyACM0",
   "webcam_opts": {
-      "width": 500,
-      "height": 500,
+      "width": 640,
+      "height": 480,
       "quality": 100,
       "delay": 0,
       "saveShots": false,
