@@ -1,6 +1,6 @@
 {
-  "host": "http://localhost:8080/push",
-  "serial_port": "/dev/tty.wchusbserial14620",
+  "host": "https://faghelg.herokuapp.com/push",
+  "serial_port": "/dev/ttyACM0",
   "webcam_opts": {
       "width": 500,
       "height": 500,
