@@ -41,6 +41,7 @@ unsigned long pastTime = 0;
 unsigned int seconds = 0;
 bool authorized = false;
 bool buttonPressed = false;
+bool responseSuccess = false;
 
 void setup() {
   // Setup serial communcation with host
@@ -75,6 +76,7 @@ void loop() {
     lcd.clear();
     authorized = false;
     buttonPressed = false;
+    responseSuccess = false;
     seconds = 0;
   }
 
@@ -101,6 +103,23 @@ void loop() {
       buttonPressed = true;
       Serial.write(1);
     }
+  }
+}
+
+void checkResponse() {
+  if (Serial.available() < 1) {
+    return;
+  }
+  
+  String responseMessage = Serial.readString();
+
+  if (responseMessage.equals("ERROR")) {
+    printString("-> Error", 1);
+  }
+  
+  if (!responseSuccess && responseMessage.equals("OK")) {
+    printString("-> OK", 1);
+    responseSuccess = false;
   }
 }
 
