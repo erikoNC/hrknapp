@@ -29,9 +29,7 @@ module.exports = class PushService {
       if (!error && response.statusCode == 201) {
         console.log('Send push success');
       } else {
-        console.log('Error:');
-        console.log(error);
-        console.log('Send push failed');
+        console.log('Push failed with status code: ' + response.statusCode);
       }
     });
   }
